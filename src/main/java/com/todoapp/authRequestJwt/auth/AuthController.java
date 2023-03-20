@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
-@CrossOrigin("http://localhost:8080")
+@CrossOrigin( "https://todoappkit.up.railway.app")
 public class AuthController {
     @Autowired
     private final AuthenticationService service;

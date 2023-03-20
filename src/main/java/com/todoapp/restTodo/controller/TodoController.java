@@ -16,12 +16,13 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/")
 @RequiredArgsConstructor
-@CrossOrigin("http://localhost:8080")
+@CrossOrigin( "https://todoappkit.up.railway.app")
 public class TodoController {
 
     @Autowired
@@ -61,6 +62,7 @@ public class TodoController {
                 .tags(taskdto.tags())
                 .category(taskdto.category())
                 .createdOn(LocalDate.now())
+                .datepick(taskdto.datepick())
                 .isCompleted(false)
                 .build();
 
@@ -96,7 +98,7 @@ public class TodoController {
         task.setTags(taskdto.tags());
         task.setCategory(taskdto.category());
         task.setIsCompleted(taskdto.isCompleted());
-
+        task.setDatepick(taskdto.datepick());
 
         Todo updateTask = todoService.updateTask(task);
 

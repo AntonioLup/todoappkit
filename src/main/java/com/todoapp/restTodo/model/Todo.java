@@ -11,6 +11,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import static jakarta.persistence.GenerationType.SEQUENCE;
 
@@ -36,6 +37,7 @@ public class Todo {
     private String category;
     private Boolean isCompleted;
     private LocalDate createdOn;
+    private LocalDateTime datepick;
     private String tags;
 //    private String username;
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
