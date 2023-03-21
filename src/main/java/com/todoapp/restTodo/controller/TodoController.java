@@ -63,7 +63,7 @@ public class TodoController {
                 .category(taskdto.category())
                 .createdOn(LocalDate.now())
                 .datepick(taskdto.datepick())
-                .isCompleted(false)
+                .isCompleted(Boolean.valueOf(false))
                 .build();
 
         task.setUsername(user);
@@ -97,7 +97,7 @@ public class TodoController {
         task.setTitle(taskdto.title());
         task.setTags(taskdto.tags());
         task.setCategory(taskdto.category());
-        task.setIsCompleted(taskdto.isCompleted());
+        task.setIsCompleted(Boolean.valueOf(taskdto.isCompleted()));
         task.setDatepick(taskdto.datepick());
 
         Todo updateTask = todoService.updateTask(task);
