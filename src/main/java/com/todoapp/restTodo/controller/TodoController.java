@@ -22,7 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/")
 @RequiredArgsConstructor
-@CrossOrigin( "https://todoappkit.up.railway.app")
+@CrossOrigin( "http://localhost:19006")
 public class TodoController {
 
     @Autowired
