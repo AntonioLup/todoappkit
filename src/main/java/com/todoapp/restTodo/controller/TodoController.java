@@ -22,7 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/")
 @RequiredArgsConstructor
-@CrossOrigin( "http://localhost:19006")
+@CrossOrigin(origins = "*")
 public class TodoController {
 
     @Autowired
