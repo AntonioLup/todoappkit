@@ -25,12 +25,7 @@ public class SecurityConfig {
     @Autowired
     private final LogoutHandler logoutHandler;
 
-    @Bean
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOrigins("http://localhost:3000", "http://localhost:19006", "https://todoappkit.up.railway.app")
-                .allowedMethods("GET", "POST", "PUT", "DELETE");
-    }
+
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
