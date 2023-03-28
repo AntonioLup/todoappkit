@@ -62,4 +62,26 @@ public class TodoService {
                 .collect(Collectors.toList());
         return completedTasks;
     }
+
+    public void updateTaskCompletion(Long taskId, boolean isCompleted) {
+        Optional<Todo> task = todoRepo.findById(taskId);
+        if (task.isPresent()) {
+            Todo updatedTask = task.get();
+            updatedTask.setIsCompleted(isCompleted);
+            todoRepo.save(updatedTask);
+        } else {
+            throw new UserNotFoundException("Task not found with ID: " + taskId);
+        }
+    }
+
+    public void completeTask(Long taskId, boolean isCompleted) {
+        Optional<Todo> taskOptional = todoRepo.findById(taskId);
+        if (taskOptional.isPresent()) {
+            Todo task = taskOptional.get();
+            task.setIsCompleted(isCompleted);
+            todoRepo.save(task);
+        } else {
+            throw new UserNotFoundException("Task not found with ID: " + taskId);
+        }
+    }
 }

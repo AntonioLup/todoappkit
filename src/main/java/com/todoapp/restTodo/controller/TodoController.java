@@ -57,7 +57,8 @@ public class TodoController {
     @PostMapping("/{username}/todos")
     public ResponseEntity<Todo> createTaskForUser(
             @PathVariable String username,
-            @RequestBody TodoDTO taskdto
+            @RequestBody TodoDTO taskdto,
+            @RequestParam(value = "complete", defaultValue = "false") boolean isCompleted
     ) {
         UserModel user = userService.getUserByUsername(username);
         List<Todo> todos = user.getTasks();
@@ -73,12 +74,14 @@ public class TodoController {
                 .category(taskdto.category())
                 .createdOn(LocalDate.now())
                 .datepick(taskdto.datepick())
-                .isCompleted(Boolean.valueOf(false))
+                .isCompleted(isCompleted)
                 .build();
 
         task.setUsername(user);
         todos.add(task);
         Todo createdTask = userService.createTask(task);
+        // Actualizar la tarea a completada
+        todoService.completeTask(createdTask.getTaskId(), isCompleted);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{taskId}").buildAndExpand(createdTask.getTaskId()).toUri();
         return ResponseEntity.created(uri).body(createdTask);
@@ -107,8 +110,13 @@ public class TodoController {
         task.setTitle(taskdto.title());
         task.setTags(taskdto.tags());
         task.setCategory(taskdto.category());
-        task.setIsCompleted(Boolean.valueOf(taskdto.isCompleted()));
         task.setDatepick(taskdto.datepick());
+
+        if (taskdto.isCompleted() != null) {
+            boolean isCompleted = Boolean.valueOf(taskdto.isCompleted());
+            task.setIsCompleted(isCompleted);
+            todoService.updateTaskCompletion(taskId, isCompleted);
+        }
 
         Todo updateTask = todoService.updateTask(task);
 
