@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -52,5 +53,13 @@ public class TodoService {
     public void deleteAllTaskById(UserModel user) {
         List<Todo> todos = user.getTasks();
         todoRepo.deleteAll(todos);
+    }
+
+    public List<Todo> getCompletedTasksByUser(UserModel user) {
+        List<Todo> todos = user.getTasks();
+        List<Todo> completedTasks = todos.stream()
+                .filter(todo -> todo.getIsCompleted())
+                .collect(Collectors.toList());
+        return completedTasks;
     }
 }

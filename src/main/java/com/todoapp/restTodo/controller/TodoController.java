@@ -42,6 +42,16 @@ public class TodoController {
         List<Todo> todos = user.getTasks();
         return new ResponseEntity<>(todos, HttpStatus.OK);
     }
+//    complete Tasks
+    @GetMapping("/{username}/todos/completed")
+    public ResponseEntity<List<Todo>> getAllCompletedTodos(@PathVariable String username) {
+        UserModel user = userService.getUserByUsername(username);
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+        List<Todo> completedTodos = todoService.getCompletedTasksByUser(user);
+        return new ResponseEntity<>(completedTodos, HttpStatus.OK);
+    }
 
 
     @PostMapping("/{username}/todos")
@@ -103,6 +113,28 @@ public class TodoController {
         Todo updateTask = todoService.updateTask(task);
 
         return ResponseEntity.ok(updateTask);
+    }
+    @PutMapping("/{username}/todos/{taskId}/complete")
+    public ResponseEntity<Todo> completeTaskForUser(
+            @PathVariable String username,
+            @PathVariable Long taskId
+    ) {
+        UserModel user = userService.getUserByUsername(username);
+
+        if(user == null){
+            return ResponseEntity.notFound().build();
+        }
+
+        Todo task = todoService.getTaskById(taskId);
+
+        if (task == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        task.setIsCompleted(true);
+        Todo updatedTask = todoService.updateTask(task);
+
+        return ResponseEntity.ok(updatedTask);
     }
 
     @DeleteMapping("/{username}/todos/{taskId}")
