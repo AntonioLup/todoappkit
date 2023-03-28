@@ -17,6 +17,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -107,10 +108,18 @@ public class TodoController {
         }
 
 
-        task.setTitle(taskdto.title());
-        task.setTags(taskdto.tags());
-        task.setCategory(taskdto.category());
-        task.setDatepick(taskdto.datepick());
+        if (taskdto.title() != null) {
+            task.setTitle(taskdto.title());
+        }
+        if (taskdto.tags() != null) {
+            task.setTags(taskdto.tags());
+        }
+        if (taskdto.category() != null) {
+            task.setCategory(taskdto.category());
+        }
+        if (taskdto.datepick() != null) {
+            task.setDatepick(taskdto.datepick());
+        }
 
         if (taskdto.isCompleted() != null) {
             boolean isCompleted = Boolean.valueOf(taskdto.isCompleted());
@@ -139,7 +148,21 @@ public class TodoController {
             return ResponseEntity.notFound().build();
         }
 
+        // Almacenar los valores actuales de los campos que no se actualizarán
+        String currentTitle = task.getTitle();
+        String currentTags = task.getTags();
+        String currentCategory = task.getCategory();
+        LocalDateTime currentDatepick = task.getDatepick();
+
+        // Actualizar solo la propiedad isCompleted
         task.setIsCompleted(true);
+
+        // Restaurar los valores actuales de los campos que no se actualizaron
+        task.setTitle(currentTitle);
+        task.setTags(currentTags);
+        task.setCategory(currentCategory);
+        task.setDatepick(currentDatepick);
+
         Todo updatedTask = todoService.updateTask(task);
 
         return ResponseEntity.ok(updatedTask);
